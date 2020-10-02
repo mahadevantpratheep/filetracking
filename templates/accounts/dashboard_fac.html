@@ -14,7 +14,7 @@
             <thead>
               <tr>
                 <th>Event</th>
-                <th>Venue</th>
+                <th>Request form</th>
                 <th>Description</th>
               </tr>
             </thead>
@@ -22,7 +22,16 @@
             <tbody>
               <tr>
                 <td>{{d.event_name}}</td>
-                <td>{{d.myfile}}</td>
+                <td>
+                  <a
+                    href="http://127.0.0.1:8000/media/{{d.myfile}}"
+                    name="file"
+                    value="{{d.myfile}}"
+                    ><button type="button" class="btn btn-success active">
+                      File
+                    </button></a
+                  >
+                </td>
                 <td>{{d.description}}</td>
                 <td>
                   <a

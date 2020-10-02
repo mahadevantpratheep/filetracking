@@ -101,10 +101,11 @@ def logout(request):
 
 def apply(request):
     if request.method == 'POST' and request.FILES['myfile']:
-        evnt_name = request.POST['evnt_name']
-        myfile = request.FILES['myfile']
-        description = request.POST['description']
-        save()
+        apply = Permission()
+        apply.evnt_name = request.POST['evnt_name']
+        apply.myfile = request.FILES['myfile']
+        apply.description = request.POST['description']
+        apply.save()
         messages.success(
             request, 'Your Application for permission has been sent')
         return redirect('dashboard_user')
@@ -119,6 +120,7 @@ def dashboard_fac(request):
     for p in perm:
         r = {}
         r['event_name'] = p.evnt_name
+        r['myfile'] = p.myfile
         r['description'] = p.description
         r['id'] = p.id
         data['det'].append(r)
@@ -141,6 +143,7 @@ def permission_granted(request):
     for pe in perm:
         r = {}
         r['event_name'] = pe.evnt_name
+        r['myfile'] = pe.myfile
         r['description'] = pe.description
         r['id'] = pe.id
         var['det'].append(r)
