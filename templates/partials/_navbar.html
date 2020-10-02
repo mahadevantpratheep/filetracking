@@ -1,0 +1,76 @@
+<!-- Navbar -->
+<nav class="navbar navbar-expand-sm navbar-dark sticky-top mt-4" style="background-color: #10284e">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'index' %}">
+            W S D C
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <ul class="navbar-nav">
+                <li {% if '/' == request.path %} class="nav-item active mr-3" {% else %} class="nav-item  mr-3"
+                    {% endif %}>
+                    <a class="nav-link " href="{% url 'index' %}">Home</a>
+                </li>
+                <li {% if 'about' in request.path %} class="nav-item active mr-3" {% else %} class="nav-item  mr-3"
+                    {% endif %}>
+                    <a class="nav-link" href="{% url 'about' %}">About</a>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav ml-auto">
+                {% if user.is_authenticated %}
+                <li {% if 'apply' in request.path %} class="nav-item active mr-3" {% else %} class="nav-item  mr-3"
+                    {% endif %}>
+                    <a class="nav-link" href="{% url 'apply' %}">Permission</a>
+                </li>
+                <li {% if 'permission_granted' in request.path %} class="nav-item active mr-3" {% else %}
+                    class="nav-item  mr-3" {% endif %}>
+                    <a class="nav-link" href="{% url 'permission_granted' %}">Granted</a>
+                </li>
+                <li class="nav-item active mr-3">
+                    <a class="nav-link" href="{% url 'dashboard_user' %}">
+                        <i class="fas fa-user-plus"></i> Welcome {{ user.username }} |
+                        DashBoard</a>
+                </li>
+                <li class="nav-item active mr-3">
+                    <div class="dropdown">
+                        <button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenuButton"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-pencil"></i> Edit
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a class="dropdown-item" href="{% url 'edit_user_profile' %}">
+                                Edit Profile</a>
+                            <a class="dropdown-item" href="{% url 'change_password' %}">
+                                Change Password</a>
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item mr-3">
+                    <a href="javascript:{document.getElementById('logout').submit()}" class="nav-link active">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                    <form action="{% url 'logout' %}" method="POST" id="logout">
+                        {% csrf_token %}
+                        <input type="hidden" />
+                    </form>
+                </li>
+                {% else %}
+                <li {% if 'register' in request.path %} class="nav-item active mr-3" {% else %} class="nav-item  mr-3"
+                    {% endif %}>
+                    <a class="nav-link" href="{% url 'register' %}">
+                        <i class="fas fa-user-plus"></i> Register</a>
+                </li>
+                <li {% if 'login' in request.path %} class="nav-item active mr-3" {% else %} class="nav-item  mr-3"
+                    {% endif %}>
+                    <a class="nav-link" href="{% url 'login_user' %}">
+                        <i class="fas fa-user-plus"></i> Login</a>
+                </li>
+
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
