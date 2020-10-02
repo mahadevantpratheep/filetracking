@@ -123,6 +123,7 @@ def dashboard_fac(request):
         r['myfile'] = p.myfile
         r['description'] = p.description
         r['id'] = p.id
+        r['status'] = p.status
         data['det'].append(r)
     return render(request, 'accounts/dashboard_fac.html', data)
 
@@ -131,13 +132,24 @@ def accept_request(request, product_id):
     t = int(product_id)
     order = Permission.objects.filter(id=t).first()
     order.accepted = True
+    order.status = "Accepted"
+    order.save()
+    messages.success(request, 'Permission Upadated!')
+    return redirect('dashboard_fac')
+
+
+def reject_request(request, product_id):
+    t = int(product_id)
+    order = Permission.objects.filter(id=t).first()
+    order.accepted = True
+    order.status = "Declined"
     order.save()
     messages.success(request, 'Permission Upadated!')
     return redirect('dashboard_fac')
 
 
 def permission_granted(request):
-    perm = Permission.objects.filter(accepted=True)
+    perm = Permission.objects.all()
     var = {}
     var['det'] = []
     for pe in perm:
@@ -146,5 +158,6 @@ def permission_granted(request):
         r['myfile'] = pe.myfile
         r['description'] = pe.description
         r['id'] = pe.id
+        r['status'] = pe.status
         var['det'].append(r)
     return render(request, 'accounts/permission_granted.html', var)
