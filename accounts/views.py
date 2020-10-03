@@ -153,7 +153,7 @@ def reject_request(request, product_id):
     order.status = "Declined"
     order.save()
     # send_mail('Response to your' + order.evnt_name + 'request','Your response has been accepted', u.email, r.email)
-    messages.success(request, 'Permission Upadated!' + r.email)
+    messages.success(request, 'Permission Upadated!')
     return redirect('dashboard_fac')
 
 
