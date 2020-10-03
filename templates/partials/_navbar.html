@@ -30,9 +30,14 @@
                     <a class="nav-link" href="{% url 'permission_granted' %}">Status</a>
                 </li>
                 <li class="nav-item active mr-3">
-                    <a class="nav-link" href="{% url 'dashboard_user' %}">
+                   {% if user.is_staff %} <a class="nav-link" href="{% url 'dashboard_fac' %}">
                         <i class="fas fa-user-plus"></i> Welcome {{ user.username }} |
                         DashBoard</a>
+                   {% else %}
+                     <a class="nav-link" href="{% url 'dashboard_user' %}">
+                        <i class="fas fa-user-plus"></i> Welcome {{ user.username }} |
+                        DashBoard</a>
+                   {% endif %}
                 </li>
                 <li class="nav-item active mr-3">
                     <div class="dropdown">

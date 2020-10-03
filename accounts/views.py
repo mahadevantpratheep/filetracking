@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import PasswordChangeForm
 from accounts.forms import EditProfileForm
 from .models import Permission
+from django.core.mail import send_mail
 
 
 def register(request):
@@ -101,11 +102,13 @@ def logout(request):
 
 def apply(request):
     if request.method == 'POST' and request.FILES['myfile']:
+        u = User.objects.filter(is_staff=False).first()
         apply = Permission()
         apply.evnt_name = request.POST['evnt_name']
         apply.myfile = request.FILES['myfile']
         apply.description = request.POST['description']
         apply.save()
+        # send_mail('Response to your' + order.evnt_name + 'request','Your response has been accepted', superuser@gmail.com, s.email)
         messages.success(
             request, 'Your Application for permission has been sent')
         return redirect('dashboard_user')
@@ -130,21 +133,27 @@ def dashboard_fac(request):
 
 def accept_request(request, product_id):
     t = int(product_id)
+    u = User.objects.filter(is_staff=True).first()
+    r = User.objects.filter(is_staff=False).first()
     order = Permission.objects.filter(id=t).first()
     order.accepted = True
     order.status = "Accepted"
     order.save()
+    #send_mail('Response to your' + order.evnt_name + 'request','Your response has been accepted', u.email, r.email)
     messages.success(request, 'Permission Upadated!')
     return redirect('dashboard_fac')
 
 
 def reject_request(request, product_id):
     t = int(product_id)
+    u = User.objects.filter(is_staff=True).first()
+    r = User.objects.filter(is_staff=False).first()
     order = Permission.objects.filter(id=t).first()
     order.accepted = True
     order.status = "Declined"
     order.save()
-    messages.success(request, 'Permission Upadated!')
+    # send_mail('Response to your' + order.evnt_name + 'request','Your response has been accepted', u.email, r.email)
+    messages.success(request, 'Permission Upadated!' + r.email)
     return redirect('dashboard_fac')
 
 
